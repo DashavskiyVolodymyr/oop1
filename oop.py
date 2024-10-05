@@ -67,20 +67,39 @@ class Game(MethodLogger):
         Game.total_games += 1
 
     def __str__(self):
-        return f"Game: {self._name}, Price: {self._price}$, Category: {self._category}"
+        return f"Game: {self.name}, Price: {self.price}$, Category: {self.category}"
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def price(self):
+        return self._price
+
+    @property
+    def category(self):
+        return self._category
+
+    @price.setter
+    def price(self, new_price: float):
+        if new_price < 0:
+            raise ValueError("Price cannot be negative.")
+        self._price = new_price
 
     def add_owner(self, user: User):
         self._owners.append(user)
 
     def apply_discount(self, discount: float):
         if 0 < discount < 1:
-            self._price *= (1 - discount)
+            self.price *= (1 - discount)
         else:
             raise ValueError("Discount must be between 0 and 1")
 
     @staticmethod
     def total_games_count():
         return Game.total_games
+
 
 
 class PremiumGame(Game):
